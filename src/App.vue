@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import FlipbookData from "./FlipbookData.json";
 
 export default {
   name: 'App',
@@ -44,13 +43,11 @@ export default {
     }
   },
   created(){
-    this.flipbookData = FlipbookData.flipbookData;
-    console.log(this.flipbookData[0]["img"])
+    this.fetchData();
   },
   methods:{
       getImgUrl(img){
-        let images = require.context('./assets/', false, /\.png$/);
-        return images('./' + img + ".png");
+        return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png"
       },
       incrementBookIndex(){
         if (this.book_index === this.flipbookData.length - 1){
@@ -75,6 +72,15 @@ export default {
                 day: 'numeric',
                 year: 'numeric'
                }).format(new Date(date))
+      },
+      async fetchData(){
+        try {
+          const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
+          const data = await response.json();
+          this.flipbookData = data.flipbookData;
+        } catch (err) {
+          console.error('Error fetching flipbook data:' + err)
+        }
       }
   }
 }
@@ -82,7 +88,7 @@ export default {
 
 <style>
 #app {
-  width: 80%;
+  width: 100%;
   max-width: 800px;
   margin: 0px auto;
   font-family: 'Gotham-Medium',Helvetica,Arial,Lucida,sans-serif;
