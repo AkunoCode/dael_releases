@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import FlipbookData from './FlipbookData.json'
+// import FlipbookData from './FlipbookData.json'
 import ReleasesPreview from '@/components/ReleasesPreview.vue'
 
 export default {
