@@ -1,53 +1,73 @@
 <template>
-  <div class="flip-container">
+  <div class="flip-container" v-if="isShowFlipbook">
     <div class="fliphtml5">
+      <button @click="toggleShowFlipbook">X</button>
       <iframe :src="flipbookData[book_index]['url']" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
-  <div class="description">
-    <h2 class="flipbookName">{{ flipbookData[book_index]["name"] }}</h2>
-    <p class="date">{{ `Published on ${formatDate(flipbookData[book_index]['date_released'])}` }}</p>
-    <p class="flipbookDesc">{{ flipbookData[book_index]["description"] }}</p>
-  </div>
-  <h3>Read More</h3>
+  <h3>Newspaper</h3>
   <div class="releases">
-    <!-- <div class="left-gradient"></div> -->
       <div class="releases-container">
-        <div v-for="(flipbook, index) in flipbookData" :key="index">
-          <div class="preview" @click="chooseIndex(index)">
-            <img 
-            class="previewImg"
-            :src='getImgUrl(flipbook["img"])' 
-            :alt="flipbook['name']"
-            />
-            <p class="preview-name">{{ flipbook['name'] }}</p>
-            <p class="date-released">{{ formatDate(flipbook['date_released']) }}</p>
-          </div>
-        </div>
+        <ReleasesPreview 
+        v-for="(flipbook, index) in flipbookData.filter(flipbook => flipbook.type === 'Newspaper')" 
+        :key="index"
+        :imgURL = "flipbook['img']"
+        :name = "flipbook['name']"
+        :dateReleased = "flipbook['date_released']"
+        @click="() => {chooseIndex(index); if (!isShowFlipbook) toggleShowFlipbook()}"
+        />
       </div>
-    <!-- <div class="right-gradient"></div> -->
+  </div>
+  <h3>Magazine</h3>
+  <div class="releases">
+      <div class="releases-container">
+        <ReleasesPreview 
+        v-for="(flipbook, index) in flipbookData.filter(flipbook => flipbook.type === 'Magazine')" 
+        :key="index"
+        :imgURL = "flipbook['img']"
+        :name = "flipbook['name']"
+        :dateReleased = "flipbook['date_released']"
+        @click="() => {chooseIndex(index); if (!isShowFlipbook) toggleShowFlipbook()}"
+        />
+      </div>
+  </div>
+  <h3>Andamyo</h3>
+  <div class="releases">
+      <div class="releases-container">
+        <ReleasesPreview 
+        v-for="(flipbook, index) in flipbookData.filter(flipbook => flipbook.type === 'Andamyo')" 
+        :key="index"
+        :imgURL = "flipbook['img']"
+        :name = "flipbook['name']"
+        :dateReleased = "flipbook['date_released']"
+        @click="() => {chooseIndex(index); if (!isShowFlipbook) toggleShowFlipbook()}"
+        />
+      </div>
   </div>
 </template>
 
 <script>
+import FlipbookData from './FlipbookData.json'
+import ReleasesPreview from '@/components/ReleasesPreview.vue'
 
 export default {
   name: 'App',
   components: {
-    
+    ReleasesPreview
   },
   data(){
     return {
       flipbookData: [],
       book_index: 0,
+      isShowFlipbook : false,
     }
   },
   created(){
     this.fetchData();
   },
   methods:{
-      getImgUrl(img){
-        return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png"
+      toggleShowFlipbook(){
+          this.isShowFlipbook = !this.isShowFlipbook
       },
       incrementBookIndex(){
         if (this.book_index === this.flipbookData.length - 1){
@@ -66,18 +86,13 @@ export default {
       chooseIndex(index){
         this.book_index = index;
       },
-      formatDate(date){
-        return Intl.DateTimeFormat('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-               }).format(new Date(date))
-      },
       async fetchData(){
         try {
-          const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
-          const data = await response.json();
-          this.flipbookData = data.flipbookData;
+          // const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
+          // const data = await response.json();
+          // this.flipbookData = data.flipbookData;
+
+          this.flipbookData = FlipbookData.flipbookData
         } catch (err) {
           console.error('Error fetching flipbook data:' + err)
         }
@@ -91,126 +106,48 @@ export default {
   width: 100%;
   max-width: 800px;
   margin: 0px auto;
-  font-family: 'Gotham-Medium',Helvetica,Arial,Lucida,sans-serif;
+  font-family: 'Gotham-Medium', Helvetica, Arial, Lucida, sans-serif;
 }
 
 .flip-container {
+  position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   column-gap: 2em;
-  
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.528);
+  backdrop-filter: blur(5px);
 }
 
 .fliphtml5 {
-    width: 100%; 
-    max-width: 800px; 
+  width: 100%; 
+  max-width: 1000px; 
+  max-height: 900px;
+  height: 100%;
 }
 
 .fliphtml5 iframe {
     width: 100%;
-    height: 700px;
-}
-
-.date{
-  margin-top: 0px;
-  font-size: small;
-  color: gray;
-}
-
-.flipbookName{
-  margin-bottom: .5em;
-}
-
-.button {
-  background: linear-gradient(302deg, rgba(121,9,9,1) 0%, rgba(255,0,0,1) 100%);
-  color: white;
-  font-weight: 700;
-  font-size: 2em;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  border-radius: 10em;
-  justify-content: center;
-  align-items: center;
-}
-
-.button:hover {
-  cursor: pointer;
+    height: 100%;
 }
 
 .releases {
   /* background-color: maroon; */
   position: relative;
 }
+
 .releases-container {
   display: flex;
   padding: 1em;
   gap: 1em;
   max-width: 100%;
   flex-wrap: wrap;
-}
-
-/* .releases-container::-webkit-scrollbar{
-  display: none;
-} */
-
-.preview {
-  max-width: 150px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: flex;
-  flex-direction: column;
-  gap: .5em;
-  margin-bottom: 1em;
-}
-
-.preview-name{
-  text-overflow: ellipsis;
-  overflow: hidden;
-  margin: 0px;
-  font-weight: bold;
-}
-
-.date-released{
-  margin: 0px;
-  font-size: small;
-}
-
-.previewImg {
-  width: 150px;
-  height: 200px;
-  /* border: .5em maroon solid; */
-}
-
-.previewImg-selected{
-  width: 150px;
-  height: 200px;
-  border: .5em rgba(255, 0, 0, 0.338) solid;
-}
-
-.preview:hover, .preview-selected:hover{
-  cursor: pointer;
-}
-
-.left-gradient {
-  width: 100px;
-  height: 100%;
-  background: linear-gradient(to right, #800000 0%, #ff99cc00 100%);
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
-
-.right-gradient {
-  width: 100px;
-  height: 100%;
-  background: linear-gradient(to left, #800000 0%, #ff99cc00 100%);
-  position: absolute;
-  right: 0px;
-  top: 0px;
 }
 
 </style>
