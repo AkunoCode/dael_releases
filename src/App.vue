@@ -1,11 +1,11 @@
 <template>
   <div class="flip-container" v-if="isShowFlipbook">
     <div class="fliphtml5">
-      <button @click="toggleShowFlipbook">X</button>
+      <button @click="toggleShowFlipbook" id="close-flipbook">X</button>
       <iframe :src="flipbookData[book_index]['url']" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
-  <h3>Newspaper</h3>
+  <h2>Newspaper</h2>
   <div class="releases">
       <div class="releases-container">
         <ReleasesPreview 
@@ -18,7 +18,7 @@
         />
       </div>
   </div>
-  <h3>Magazine</h3>
+  <h2>Magazine</h2>
   <div class="releases">
       <div class="releases-container">
         <ReleasesPreview 
@@ -31,7 +31,7 @@
         />
       </div>
   </div>
-  <h3>Andamyo</h3>
+  <h2>Andamyo</h2>
   <div class="releases">
       <div class="releases-container">
         <ReleasesPreview 
@@ -68,6 +68,11 @@ export default {
   methods:{
       toggleShowFlipbook(){
           this.isShowFlipbook = !this.isShowFlipbook
+          if (this.isShowFlipbook) {
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+          } else {
+            document.body.style.overflow = ''; // Enable scrolling
+          }
       },
       incrementBookIndex(){
         if (this.book_index === this.flipbookData.length - 1){
@@ -88,11 +93,11 @@ export default {
       },
       async fetchData(){
         try {
-          // const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
-          // const data = await response.json();
-          // this.flipbookData = data.flipbookData;
+          const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
+          const data = await response.json();
+          this.flipbookData = data.flipbookData;
 
-          this.flipbookData = FlipbookData.flipbookData
+          // this.flipbookData = FlipbookData.flipbookData
         } catch (err) {
           console.error('Error fetching flipbook data:' + err)
         }
@@ -104,13 +109,13 @@ export default {
 <style>
 #app {
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0px auto;
-  font-family: 'Gotham-Medium', Helvetica, Arial, Lucida, sans-serif;
+  font-family: 'Geologica-Black',Helvetica,Arial,Lucida,sans-serif;
 }
 
 .flip-container {
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -144,10 +149,23 @@ export default {
 
 .releases-container {
   display: flex;
-  padding: 1em;
-  gap: 1em;
+  /* padding: 1em; */
+  gap: .8em;
   max-width: 100%;
   flex-wrap: wrap;
+  margin-bottom: 3em;
+}
+
+#close-flipbook{
+  background-color: maroon;
+  color: white;
+  border: none;
+  font-weight: bold;
+  padding: .5em;
+}
+
+#close-flipbook:hover{
+  cursor: pointer;
 }
 
 </style>
