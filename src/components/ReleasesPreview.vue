@@ -1,8 +1,10 @@
 <template>
     <div class="preview">
         <img class="previewImg" :src='getImgUrl(imgURL)' :alt="name" />
-        <p class="preview-name">{{ name }}</p>
-        <p class="date-released">{{ formatDate(dateReleased) }}</p>
+        <div class="text-container">
+          <p class="preview-name">{{ name }}</p>
+          <p class="date-released">{{ formatDate(dateReleased) }}</p>
+        </div>
     </div>
 </template>
 <script>
@@ -15,8 +17,8 @@ export default {
     },
     methods: {
         getImgUrl(img){
-            // return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png"
-            return require('@/assets/'.concat(img, '.png'))
+            return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png"
+            // return require('@/assets/'.concat(img, '.png'))
         },
         formatDate(date){
             return Intl.DateTimeFormat('en-US', {
@@ -30,14 +32,29 @@ export default {
 </script>
 <style scoped>
 .preview {
-  max-width: 150px;
-  /* overflow: hidden; */
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  max-width: 10em;
   gap: .5em;
-  margin-bottom: 1em;
+  border: 1px solid rgba(128, 128, 128, 0.493);
+}
+
+.text-container{
+  position: absolute;
+  bottom: -100%;
+  display: flex;
+  justify-content: flex-end;
+  text-align: center;
+  flex-direction: column;
+  gap: .5em;
+  padding-bottom: 1em;
+  height: 50%;
+  width: 100%;
+  background: linear-gradient(0deg, rgb(139, 1, 1) 30%, rgba(139, 1, 1, 0) 100%);
+  color: white;
 }
 
 .preview-name{
@@ -48,24 +65,30 @@ export default {
 }
 
 .date-released{
+  display: none;
   margin: 0px;
   font-size: small;
 }
 
 .previewImg {
-  width: 150px;
-  height: 200px;
-  border: 1px solid grey;
+  width: 10em;
+  height: 14em;
   /* border: .5em maroon solid; */
-}
-
-.previewImg-selected{
-  width: 150px;
-  height: 200px;
-  border: .5em rgba(255, 0, 0, 0.338) solid;
 }
 
 .preview:hover, .preview-selected:hover{
   cursor: pointer;
+}
+
+.preview:hover .text-container{
+  bottom: 0;
+  transition: bottom .5s;
+}
+
+.preview:hover{
+  /* Transition to add box shadow and maroon border */
+  box-shadow: 0px 0px 10px 0px maroon;
+  border: 1px maroon solid;
+  transition: box-shadow .5s, border .5s;
 }
 </style>
