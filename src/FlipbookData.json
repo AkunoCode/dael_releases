@@ -64,6 +64,16 @@
       ],
       "magazine": [
         {
+          "name": "The L Mag (2023)",
+          "volume": 23,
+          "issue": 1,
+          "img": "TheLMag23",
+          "url": "https://online.fliphtml5.com/xzlqj/uxyb/",
+          "date_released": "2024-01-24",
+          "description": "The L Mag (2023) is a special edition that features the stories of the university's students, faculty, and alumni, as well as the events and activities that took place during the said period.",
+          "type": "Magazine"
+        },
+        {
           "name": "Envergan Magazine (2024)",
           "volume": 77,
           "issue": 7,
