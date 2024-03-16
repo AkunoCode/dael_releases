@@ -5,44 +5,50 @@
       <iframe :src="flipbookData[this.type][this.book_index]['url']" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
-  <h2>Newspaper</h2>
-  <div class="releases">
-      <div class="releases-container">
-        <ReleasesPreview 
-        v-for="(flipbook, index) in this.newspapers" 
-        :key="index"
-        :imgURL = "flipbook['img']"
-        :name = "flipbook['name']"
-        :dateReleased = "flipbook['date_released']"
-        @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
-        />
-      </div>
+  <div v-if="isAtReleases || isAtNewspaper">
+    <h2>Newspaper</h2>
+    <div class="releases">
+        <div class="releases-container">
+          <ReleasesPreview 
+          v-for="(flipbook, index) in this.newspapers" 
+          :key="index"
+          :imgURL = "flipbook['img']"
+          :name = "flipbook['name']"
+          :dateReleased = "flipbook['date_released']"
+          @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+          />
+        </div>
+    </div>
   </div>
-  <h2>Magazine</h2>
-  <div class="releases">
-      <div class="releases-container">
-        <ReleasesPreview 
-        v-for="(flipbook, index) in this.magazines" 
-        :key="index"
-        :imgURL = "flipbook['img']"
-        :name = "flipbook['name']"
-        :dateReleased = "flipbook['date_released']"
-        @click="() => {chooseIndex(index, 'magazine'); if (!isShowFlipbook) toggleShowFlipbook()}"
-        />
-      </div>
+  <div v-if="isAtReleases || isAtMagazine">
+    <h2>Magazine</h2>
+    <div class="releases">
+        <div class="releases-container">
+          <ReleasesPreview 
+          v-for="(flipbook, index) in this.magazines" 
+          :key="index"
+          :imgURL = "flipbook['img']"
+          :name = "flipbook['name']"
+          :dateReleased = "flipbook['date_released']"
+          @click="() => {chooseIndex(index, 'magazine'); if (!isShowFlipbook) toggleShowFlipbook()}"
+          />
+        </div>
+    </div>
   </div>
-  <h2>Andamyo</h2>
-  <div class="releases">
-      <div class="releases-container">
-        <ReleasesPreview 
-        v-for="(flipbook, index) in this.andamyos" 
-        :key="index"
-        :imgURL = "flipbook['img']"
-        :name = "flipbook['name']"
-        :dateReleased = "flipbook['date_released']"
-        @click="() => {chooseIndex(index, 'andamyo'); if (!isShowFlipbook) toggleShowFlipbook()}"
-        />
-      </div>
+  <div v-if="isAtReleases || isAtAndamyo">
+    <h2>Andamyo</h2>
+    <div class="releases">
+        <div class="releases-container">
+          <ReleasesPreview 
+          v-for="(flipbook, index) in this.andamyos" 
+          :key="index"
+          :imgURL = "flipbook['img']"
+          :name = "flipbook['name']"
+          :dateReleased = "flipbook['date_released']"
+          @click="() => {chooseIndex(index, 'andamyo'); if (!isShowFlipbook) toggleShowFlipbook()}"
+          />
+        </div>
+    </div>
   </div>
 </template>
 
@@ -64,6 +70,10 @@ export default {
       book_index: 0,
       type: 'newspapers',
       isShowFlipbook : false,
+      isAtReleases: true,
+      isAtMagazine: false,
+      isAtAndamyo: false,
+      isAtNewspaper: false
     }
   },
   created(){
@@ -121,7 +131,28 @@ export default {
         });
       },
       checkPath(){
-        console.log(this.$route.path)
+        let currentPath = window.location.href
+        if (currentPath.includes('newspaper')){
+          this.isAtNewspaper = true
+          this.isAtMagazine = false
+          this.isAtAndamyo = false
+          this.isAtReleases = false
+        } else if (currentPath.includes('magazine')){
+          this.isAtNewspaper = false
+          this.isAtMagazine = true
+          this.isAtAndamyo = false
+          this.isAtReleases = false
+        } else if (currentPath.includes('andamyo')){
+          this.isAtNewspaper = false
+          this.isAtMagazine = false
+          this.isAtAndamyo = true
+          this.isAtReleases = false
+        } else {
+          this.isAtNewspaper = false
+          this.isAtMagazine = false
+          this.isAtAndamyo = false
+          this.isAtReleases = true
+        }
       }
     }
   }
