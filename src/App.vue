@@ -2,19 +2,19 @@
   <div class="flip-container" v-if="isShowFlipbook">
     <div class="fliphtml5">
       <button @click="toggleShowFlipbook" id="close-flipbook">X</button>
-      <iframe :src="flipbookData[book_index]['url']" frameborder="0" scrolling="no"></iframe>
+      <iframe :src="flipbookData[this.type][this.book_index]['url']" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
   <h2>Newspaper</h2>
   <div class="releases">
       <div class="releases-container">
         <ReleasesPreview 
-        v-for="(flipbook, index) in flipbookData.filter(flipbook => flipbook.type === 'Newspaper')" 
+        v-for="(flipbook, index) in this.newspapers" 
         :key="index"
         :imgURL = "flipbook['img']"
         :name = "flipbook['name']"
         :dateReleased = "flipbook['date_released']"
-        @click="() => {chooseIndex(index); if (!isShowFlipbook) toggleShowFlipbook()}"
+        @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
         />
       </div>
   </div>
@@ -22,12 +22,12 @@
   <div class="releases">
       <div class="releases-container">
         <ReleasesPreview 
-        v-for="(flipbook, index) in flipbookData.filter(flipbook => flipbook.type === 'Magazine')" 
+        v-for="(flipbook, index) in this.magazines" 
         :key="index"
         :imgURL = "flipbook['img']"
         :name = "flipbook['name']"
         :dateReleased = "flipbook['date_released']"
-        @click="() => {chooseIndex(index); if (!isShowFlipbook) toggleShowFlipbook()}"
+        @click="() => {chooseIndex(index, 'magazine'); if (!isShowFlipbook) toggleShowFlipbook()}"
         />
       </div>
   </div>
@@ -35,19 +35,19 @@
   <div class="releases">
       <div class="releases-container">
         <ReleasesPreview 
-        v-for="(flipbook, index) in flipbookData.filter(flipbook => flipbook.type === 'Andamyo')" 
+        v-for="(flipbook, index) in this.andamyos" 
         :key="index"
         :imgURL = "flipbook['img']"
         :name = "flipbook['name']"
         :dateReleased = "flipbook['date_released']"
-        @click="() => {chooseIndex(index); if (!isShowFlipbook) toggleShowFlipbook()}"
+        @click="() => {chooseIndex(index, 'andamyo'); if (!isShowFlipbook) toggleShowFlipbook()}"
         />
       </div>
   </div>
 </template>
 
 <script>
-// import FlipbookData from './FlipbookData.json'
+// import FlipbookData from '@/FlipbookData.json' // For development
 import ReleasesPreview from '@/components/ReleasesPreview.vue'
 
 export default {
@@ -58,12 +58,19 @@ export default {
   data(){
     return {
       flipbookData: [],
+      newspapers: [],
+      magazines: [],
+      andamyos: [],
       book_index: 0,
+      type: 'newspapers',
       isShowFlipbook : false,
     }
   },
   created(){
     this.fetchData();
+  },
+  mounted(){
+    this.checkPath()
   },
   methods:{
       toggleShowFlipbook(){
@@ -88,22 +95,36 @@ export default {
           this.book_index -= 1;
         }
       },
-      chooseIndex(index){
+      chooseIndex(index, type){
         this.book_index = index;
+        this.type = type;
       },
       async fetchData(){
         try {
+          // this.flipbookData = FlipbookData.flipbookData // For development
+
+          // For production
           const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
           const data = await response.json();
           this.flipbookData = data.flipbookData;
 
-          // this.flipbookData = FlipbookData.flipbookData
+          this.newspapers = this.sortByDate(this.flipbookData.newspaper)
+          this.magazines = this.sortByDate(this.flipbookData.magazine)
+          this.andamyos = this.sortByDate(this.flipbookData.andamyo)
         } catch (err) {
           console.error('Error fetching flipbook data:' + err)
         }
+      },
+      sortByDate(data) {
+        return data.sort((a, b) => {
+          return new Date(b.date_released) - new Date(a.date_released);
+        });
+      },
+      checkPath(){
+        console.log(this.$route.path)
       }
+    }
   }
-}
 </script>
 
 <style>

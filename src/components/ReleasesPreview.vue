@@ -17,8 +17,8 @@ export default {
     },
     methods: {
         getImgUrl(img){
-            return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png"
-            // return require('@/assets/'.concat(img, '.png'))
+            return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png" // For production
+            // return require('@/assets/'.concat(img, '.png')) // For development
         },
         formatDate(date){
             return Intl.DateTimeFormat('en-US', {
