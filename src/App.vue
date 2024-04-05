@@ -1,52 +1,49 @@
 <template>
-  <div class="flip-container" v-if="isShowFlipbook">
+  <div class="flip-container" v-if="isShowFlipbook" @click.self="toggleShowFlipbook" >
     <div class="fliphtml5">
-      <button @click="toggleShowFlipbook" id="close-flipbook">X</button>
+      <!-- dont show x if mobile -->
+      <button id="close-flipbook" @click="toggleShowFlipbook" v-if="!isMobile">X</button>
       <iframe :src="flipbookData[this.type][this.book_index]['url']" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
   <div v-if="isAtReleases || isAtNewspaper">
     <h2>Newspaper</h2>
-    <div class="releases">
-        <div class="releases-container">
-          <ReleasesPreview 
-          v-for="(flipbook, index) in this.newspapers" 
-          :key="index"
-          :imgURL = "flipbook['img']"
-          :name = "flipbook['name']"
-          :dateReleased = "flipbook['date_released']"
-          @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
-          />
-        </div>
-    </div>
+    <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
+      <ReleasesPreview
+      v-for="(flipbook, index) in this.newspapers"
+      :key="index"
+      :imgURL = "flipbook['img']"
+      :name = "flipbook['name']"
+      :dateReleased = "flipbook['date_released']"
+      @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      />
+    </PreviewContainer>
   </div>
   <div v-if="isAtReleases || isAtMagazine">
     <h2>Magazine</h2>
-    <div class="releases">
-        <div class="releases-container">
-          <ReleasesPreview 
-          v-for="(flipbook, index) in this.magazines" 
-          :key="index"
-          :imgURL = "flipbook['img']"
-          :name = "flipbook['name']"
-          :dateReleased = "flipbook['date_released']"
-          @click="() => {chooseIndex(index, 'magazine'); if (!isShowFlipbook) toggleShowFlipbook()}"
-          />
-        </div>
-    </div>
+    <PreviewContainer :isAtDedicatedPage="isAtMagazine" :isAtGeneralPage="isAtReleases" givenDirection="right">
+      <ReleasesPreview
+      v-for="(flipbook, index) in this.magazines"
+      :key="index"
+      :imgURL = "flipbook['img']"
+      :name = "flipbook['name']"
+      :dateReleased = "flipbook['date_released']"
+      @click="() => {chooseIndex(index, 'magazine'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      />
+    </PreviewContainer>
   </div>
   <div v-if="isAtReleases || isAtAndamyo">
     <h2>Andamyo</h2>
     <div class="releases">
         <div class="releases-container">
-          <ReleasesPreview 
-          v-for="(flipbook, index) in this.andamyos" 
-          :key="index"
-          :imgURL = "flipbook['img']"
-          :name = "flipbook['name']"
-          :dateReleased = "flipbook['date_released']"
-          @click="() => {chooseIndex(index, 'andamyo'); if (!isShowFlipbook) toggleShowFlipbook()}"
-          />
+            <ReleasesPreview
+            v-for="(flipbook, index) in this.andamyos"
+            :key="index"
+            :imgURL = "flipbook['img']"
+            :name = "flipbook['name']"
+            :dateReleased = "flipbook['date_released']"
+            @click="() => {chooseIndex(index, 'andamyo'); if (!isShowFlipbook) toggleShowFlipbook()}"
+            />
         </div>
     </div>
   </div>
@@ -55,11 +52,12 @@
 <script>
 // import FlipbookData from '@/FlipbookData.json' // For development
 import ReleasesPreview from '@/components/ReleasesPreview.vue'
+import PreviewContainer from '@/components/PreviewContainer.vue'
 
 export default {
   name: 'App',
   components: {
-    ReleasesPreview
+    ReleasesPreview, PreviewContainer
   },
   data(){
     return {
@@ -73,7 +71,8 @@ export default {
       isAtReleases: true,
       isAtMagazine: false,
       isAtAndamyo: false,
-      isAtNewspaper: false
+      isAtNewspaper: false,
+      isMobile: false
     }
   },
   created(){
@@ -81,6 +80,11 @@ export default {
   },
   mounted(){
     this.checkPath()
+    this.checkMobile()
+    window.addEventListener('popstate', this.onMobileBack)
+  },
+  beforeUnmount(){
+    window.removeEventListener('popstate', this.onMobileBack)
   },
   methods:{
       toggleShowFlipbook(){
@@ -153,6 +157,20 @@ export default {
           this.isAtAndamyo = false
           this.isAtReleases = true
         }
+      },
+      checkMobile(){
+        if (window.innerWidth <= 400){
+          this.isMobile = true
+        } else {
+          this.isMobile = false
+        }
+      },
+      onMobileBack(){
+        if (this.isShowFlipbook){
+          this.toggleShowFlipbook()
+        } else {
+          window.history.back()
+        }
       }
     }
   }
@@ -185,7 +203,7 @@ export default {
 .fliphtml5 {
   width: 100%; 
   max-width: 1000px; 
-  max-height: 900px;
+  max-height: 700px;
   height: 100%;
 }
 
@@ -218,6 +236,38 @@ export default {
 
 #close-flipbook:hover{
   cursor: pointer;
+}
+
+.vue3-marquee.horizontal{
+  gap: 1em;
+  z-index: 0;
+}
+
+.vue3-marquee.horizontal>.marquee{
+  gap: 1em;
+  margin: 0.5em 0px;
+}
+
+.vue3-marquee.horizontal>.overlay:before, .vue3-marquee.horizontal>.overlay:after{
+  pointer-events: none;
+}
+
+@media screen and (max-width: 400px){
+  .releases-container{
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .fliphtml5 {
+    max-width: 100%;
+    max-height: 70%;
+  }
+
+  .vue3-marquee.horizontal>.overlay:before, .vue3-marquee.horizontal>.overlay:after{
+    display: none;
+  }
+  
 }
 
 </style>

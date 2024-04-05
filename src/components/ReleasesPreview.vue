@@ -40,6 +40,8 @@ export default {
   max-width: 10em;
   gap: .5em;
   border: 1px solid rgba(128, 128, 128, 0.493);
+  border-radius: .2em;
+  aspect-ratio: 5/7;
 }
 
 .text-container{
@@ -71,8 +73,8 @@ export default {
 }
 
 .previewImg {
-  width: 10em;
-  height: 14em;
+  width: 100%;
+  aspect-ratio: 5/7;
   /* border: .5em maroon solid; */
 }
 
@@ -90,5 +92,12 @@ export default {
   box-shadow: 0px 0px 10px 0px maroon;
   border: 1px maroon solid;
   transition: box-shadow .5s, border .5s;
+}
+
+@media screen and (max-width: 400px){
+  .preview{
+    max-width: 9em;
+    aspect-ratio: 5/7;
+  }
 }
 </style>
