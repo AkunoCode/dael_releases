@@ -17,8 +17,13 @@ export default {
     },
     methods: {
         getImgUrl(img){
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return require('@/assets/'.concat(img, '.png'))
+          } else {
             return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png" // For production
-            // return require('@/assets/'.concat(img, '.png')) // For development
+          }
+            //return 'https://theluzonian.press/wp-content/releases-leo/img/' + img + ".png" // For production
+            //return require('@/assets/'.concat(img, '.png')) // For development
         },
         formatDate(date){
             return Intl.DateTimeFormat('en-US', {

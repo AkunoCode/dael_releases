@@ -3,11 +3,12 @@
     <div class="fliphtml5">
       <!-- dont show x if mobile -->
       <button id="close-flipbook" @click="toggleShowFlipbook" v-if="!isMobile">X</button>
-      <iframe :src="flipbookData[this.type][this.book_index]['url']" frameborder="0" scrolling="no"></iframe>
+      <iframe :src="flipbookData[this.type][this.book_index]['url']" frameborder="0" scrolling="no" allowfullscreen webkitallowfullscreen></iframe>
     </div>
   </div>
   <div v-if="isAtReleases || isAtNewspaper">
     <h2>Newspaper</h2>
+    <hr class="divider">
     <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
       <ReleasesPreview
       v-for="(flipbook, index) in this.newspapers"
@@ -21,6 +22,7 @@
   </div>
   <div v-if="isAtReleases || isAtMagazine">
     <h2>Magazine</h2>
+    <hr class="divider">
     <PreviewContainer :isAtDedicatedPage="isAtMagazine" :isAtGeneralPage="isAtReleases" givenDirection="right">
       <ReleasesPreview
       v-for="(flipbook, index) in this.magazines"
@@ -34,6 +36,7 @@
   </div>
   <div v-if="isAtReleases || isAtAndamyo">
     <h2>Andamyo</h2>
+    <hr class="divider">
     <div class="releases">
         <div class="releases-container">
             <ReleasesPreview
@@ -50,7 +53,7 @@
 </template>
 
 <script>
-// import FlipbookData from '@/FlipbookData.json' // For development
+import FlipbookData from '@/FlipbookData.json' // For development
 import ReleasesPreview from '@/components/ReleasesPreview.vue'
 import PreviewContainer from '@/components/PreviewContainer.vue'
 
@@ -115,13 +118,22 @@ export default {
       },
       async fetchData(){
         try {
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            this.flipbookData = FlipbookData.flipbookData; // For development
+          } else {
+            const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
+            const data = await response.json();
+            this.flipbookData = data.flipbookData;
+          }
+
           // this.flipbookData = FlipbookData.flipbookData // For development
 
           // For production
-          const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
-          const data = await response.json();
-          this.flipbookData = data.flipbookData;
-
+          
+          //const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
+          //const data = await response.json();
+          //this.flipbookData = data.flipbookData;
+          
           this.newspapers = this.sortByDate(this.flipbookData.newspaper)
           this.magazines = this.sortByDate(this.flipbookData.magazine)
           this.andamyos = this.sortByDate(this.flipbookData.andamyo)
@@ -182,6 +194,11 @@ export default {
   max-width: 900px;
   margin: 0px auto;
   font-family: 'Geologica-Black',Helvetica,Arial,Lucida,sans-serif;
+}
+
+.divider {
+  border: 1px solid #800000;
+  margin-bottom: 20px;
 }
 
 .flip-container {
