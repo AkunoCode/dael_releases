@@ -6,12 +6,12 @@
       <iframe :src="flipbookData[this.type][this.book_index]['url']" frameborder="0" scrolling="no" allowfullscreen webkitallowfullscreen></iframe>
     </div>
   </div>
-  <div v-if="isAtReleases || isAtNewspaper">
-    <h2>Newspaper</h2>
+  <div v-if="(isAtReleases || isAtNewsletter) && (hasNewsletter || isAtNewsletter)">
+    <h2><a href="https://theluzonian.press/index.php/category/releases/newsletter/">Newsletter</a></h2>
     <hr class="divider">
     <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
       <ReleasesPreview
-      v-for="(flipbook, index) in this.newspapers"
+      v-for="(flipbook, index) in this.newsletters"
       :key="index"
       :imgURL = "flipbook['img']"
       :name = "flipbook['name']"
@@ -20,8 +20,36 @@
       />
     </PreviewContainer>
   </div>
-  <div v-if="isAtReleases || isAtMagazine">
-    <h2>Magazine</h2>
+  <div v-if="(isAtReleases || isAtTabloid) && (hasTabloid || isAtTabloid)">
+    <h2><a href="https://theluzonian.press/index.php/category/releases/tabloid/">Tabloid</a></h2>
+    <hr class="divider">
+    <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
+      <ReleasesPreview
+      v-for="(flipbook, index) in this.tabloids"
+      :key="index"
+      :imgURL = "flipbook['img']"
+      :name = "flipbook['name']"
+      :dateReleased = "flipbook['date_released']"
+      @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      />
+    </PreviewContainer>
+  </div>
+  <div v-if="(isAtReleases || isAtBroadsheet) && (hasBroadsheet || isAtBroadsheet)">
+    <h2><a href="https://theluzonian.press/index.php/category/releases/broadsheet/">Broadsheet</a></h2>
+    <hr class="divider">
+    <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
+      <ReleasesPreview
+      v-for="(flipbook, index) in this.broadsheets"
+      :key="index"
+      :imgURL = "flipbook['img']"
+      :name = "flipbook['name']"
+      :dateReleased = "flipbook['date_released']"
+      @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      />
+    </PreviewContainer>
+  </div>
+  <div v-if="(isAtReleases || isAtMagazine) && (hasMagazine || isAtMagazine)">
+    <h2><a href="https://theluzonian.press/index.php/category/releases/magazine/">Magazine</a></h2>
     <hr class="divider">
     <PreviewContainer :isAtDedicatedPage="isAtMagazine" :isAtGeneralPage="isAtReleases" givenDirection="right">
       <ReleasesPreview
@@ -34,8 +62,8 @@
       />
     </PreviewContainer>
   </div>
-  <div v-if="isAtReleases || isAtAndamyo">
-    <h2>Andamyo</h2>
+  <div v-if="(isAtReleases || isAtAndamyo) && (hasAndamyo || isAtAndamyo)">
+    <h2><a href="https://theluzonian.press/index.php/category/releases/andamyo/">Andamyo</a></h2>
     <hr class="divider">
     <div class="releases">
         <div class="releases-container">
@@ -65,7 +93,9 @@ export default {
   data(){
     return {
       flipbookData: [],
-      newspapers: [],
+      newsletters: [],
+      broadsheets: [],
+      tabloids: [],
       magazines: [],
       andamyos: [],
       book_index: 0,
@@ -74,8 +104,27 @@ export default {
       isAtReleases: true,
       isAtMagazine: false,
       isAtAndamyo: false,
-      isAtNewspaper: false,
+      isAtNewsletter: false,
+      isAtTabloid: false,
+      isAtBroadsheet: false,
       isMobile: false
+    }
+  },
+  computed:{
+    hasNewsletter(){
+      return this.newsletters.length > 0
+    },
+    hasTabloid(){
+      return this.tabloids.length > 0
+    },
+    hasBroadsheet(){
+      return this.broadsheets.length > 0
+    },
+    hasMagazine(){
+      return this.magazines.length > 0
+    },
+    hasAndamyo(){
+      return this.andamyos.length > 0
     }
   },
   created(){
@@ -126,15 +175,9 @@ export default {
             this.flipbookData = data.flipbookData;
           }
 
-          // this.flipbookData = FlipbookData.flipbookData // For development
-
-          // For production
-          
-          //const response = await fetch("https://theluzonian.press/wp-content/releases-leo/FlipbookData.json");
-          //const data = await response.json();
-          //this.flipbookData = data.flipbookData;
-          
-          this.newspapers = this.sortByDate(this.flipbookData.newspaper)
+          this.newsletters = this.sortByDate(this.flipbookData.newsletter)
+          this.tabloids = this.sortByDate(this.flipbookData.tabloid)
+          this.broadsheets = this.sortByDate(this.flipbookData.broadsheet)
           this.magazines = this.sortByDate(this.flipbookData.magazine)
           this.andamyos = this.sortByDate(this.flipbookData.andamyo)
         } catch (err) {
@@ -194,6 +237,11 @@ export default {
   max-width: 900px;
   margin: 0px auto;
   font-family: 'Geologica-Black',Helvetica,Arial,Lucida,sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(31, 30, 30);
 }
 
 .divider {
