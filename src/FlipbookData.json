@@ -1,6 +1,6 @@
 {
     "flipbookData": {
-      "newspaper": [
+      "newsletter": [
         {
           "name": "Newsletter (2023)",
           "volume": 74,
@@ -9,17 +9,7 @@
           "url": "https://online.fliphtml5.com/hncrb/xcib/index.html?fbclid=IwAR3Juxu4nR0oui8GDDA0LcNLKGgHSVA1fNemMSj14hCyS1Hqz4zsVzACVcs#p=1",
           "date_released": "2024-02-12",
           "description": "After almost five years, The Luzonian is thrilled to announce the availability of our print releases. Look back on the stories of 2023 and claim your newsletter (June to August) at The Luzonian's office located in the OSAS Building starting on Feb. 12.",
-          "type":"Newspaper"
-        },
-        {
-          "name": "Tabloid (2019)",
-          "volume": 70,
-          "issue": 2,
-          "img": "Tabloid702",
-          "url": "https://online.fliphtml5.com/kqvce/liie/#p=1",
-          "date_released": "2019",
-          "description": "Tabloid (September-October 2019) is a special edition that features the stories of the university's students, faculty, and alumni, as well as the events and activities that took place during the said period.",
-          "type":"Newspaper"
+          "type":"Newsletter"
         },
         {
           "name": "Newsletter (2019)",
@@ -29,7 +19,7 @@
           "url": "https://online.fliphtml5.com/kqvce/fqfa/#p=1",
           "date_released": "2019",
           "description": "Newsletter (July-August 2019) is a special edition that features the stories of the university's students, faculty, and alumni, as well as the events and activities that took place during the said period.",
-          "type":"Newspaper"
+          "type":"Newsletter"
         },
         {
           "name": "Newsletter (2022)",
@@ -39,17 +29,7 @@
           "url": "https://fliphtml5.com/kqvce/wcrg/First_Semester_Issue_Newsletter/",
           "date_released": "2022-05-24",
           "description": "Newsletter (June-August 2022) is a special edition that features the stories of the university's students, faculty, and alumni, as well as the events and activities that took place during the said period.",
-          "type":"Newspaper"
-        },
-        {
-          "name": "Tabloid (2023)",
-          "volume": 74,
-          "issue": 3,
-          "img": "Tabloid743",
-          "url": "https://online.fliphtml5.com/hncrb/csut/index.html?fbclid=IwAR0vGzCbu3BIxjf_HnRdka3_x95zYO2JcY_493xX3sh_hofFdOc3QLnBHtM#p=1",
-          "date_released": "2024-02-12",
-          "description": "After almost five years, The Luzonian is thrilled to announce the availability of our print releases. Look back on the stories of 2023 and claim your tabloid (September-October) at The Luzonian's office located in the OSAS Building starting on Feb. 12.",
-          "type":"Newspaper"
+          "type":"Newsletter"
         },
         {
           "name": "Newsletter (2023)",
@@ -59,8 +39,33 @@
           "url": "https://fliphtml5.com/kqvce/frog/February_Issue_%7C_Newsletter/",
           "date_released": "2023-03-31",
           "description": "Newsletter (February 2023) is a special edition that features the stories of the university's students, faculty, and alumni, as well as the events and activities that took place during the said period.",
-          "type":"Newspaper"
+          "type":"Newsletter"
         }
+      ],
+      "tabloid": [
+        {
+          "name": "Tabloid (2019)",
+          "volume": 70,
+          "issue": 2,
+          "img": "Tabloid702",
+          "url": "https://online.fliphtml5.com/kqvce/liie/#p=1",
+          "date_released": "2019",
+          "description": "Tabloid (September-October 2019) is a special edition that features the stories of the university's students, faculty, and alumni, as well as the events and activities that took place during the said period.",
+          "type":"Tabloid"
+        },
+        {
+          "name": "Tabloid (2023)",
+          "volume": 74,
+          "issue": 3,
+          "img": "Tabloid743",
+          "url": "https://online.fliphtml5.com/hncrb/csut/index.html?fbclid=IwAR0vGzCbu3BIxjf_HnRdka3_x95zYO2JcY_493xX3sh_hofFdOc3QLnBHtM#p=1",
+          "date_released": "2024-02-12",
+          "description": "After almost five years, The Luzonian is thrilled to announce the availability of our print releases. Look back on the stories of 2023 and claim your tabloid (September-October) at The Luzonian's office located in the OSAS Building starting on Feb. 12.",
+          "type":"Tabloid"
+        }
+      ],
+      "broadsheet": [
+
       ],
       "magazine": [
         {
