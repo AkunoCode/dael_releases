@@ -9,7 +9,7 @@
   <div v-if="(isAtReleases || isAtNewsletter) && (hasNewsletter || isAtNewsletter)">
     <h2><a href="https://theluzonian.press/index.php/category/releases/newsletter/">Newsletter</a></h2>
     <hr class="divider">
-    <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
+    <PreviewContainer :isAtDedicatedPage="isAtNewsletter" :isAtGeneralPage="isAtReleases" givenDirection="left">
       <ReleasesPreview
       v-for="(flipbook, index) in this.newsletters"
       :key="index"
@@ -23,7 +23,7 @@
   <div v-if="(isAtReleases || isAtTabloid) && (hasTabloid || isAtTabloid)">
     <h2><a href="https://theluzonian.press/index.php/category/releases/tabloid/">Tabloid</a></h2>
     <hr class="divider">
-    <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
+    <PreviewContainer :isAtDedicatedPage="isAtNewsletter" :isAtGeneralPage="isAtReleases" givenDirection="left">
       <ReleasesPreview
       v-for="(flipbook, index) in this.tabloids"
       :key="index"
@@ -37,7 +37,7 @@
   <div v-if="(isAtReleases || isAtBroadsheet) && (hasBroadsheet || isAtBroadsheet)">
     <h2><a href="https://theluzonian.press/index.php/category/releases/broadsheet/">Broadsheet</a></h2>
     <hr class="divider">
-    <PreviewContainer :isAtDedicatedPage="isAtNewspaper" :isAtGeneralPage="isAtReleases" givenDirection="left">
+    <PreviewContainer :isAtDedicatedPage="isAtNewsletter" :isAtGeneralPage="isAtReleases" givenDirection="left">
       <ReleasesPreview
       v-for="(flipbook, index) in this.broadsheets"
       :key="index"
@@ -191,25 +191,47 @@ export default {
       },
       checkPath(){
         let currentPath = window.location.href
-        if (currentPath.includes('newspaper')){
-          this.isAtNewspaper = true
+        if (currentPath.includes('newsletter')){
+          this.isAtNewsletter = true
           this.isAtMagazine = false
           this.isAtAndamyo = false
+          this.isAtTabloid = false
+          this.isAtBroadsheet = false
           this.isAtReleases = false
         } else if (currentPath.includes('magazine')){
-          this.isAtNewspaper = false
+          this.isAtNewsletter = false
           this.isAtMagazine = true
           this.isAtAndamyo = false
+          this.isAtTabloid = false
+          this.isAtBroadsheet = false
           this.isAtReleases = false
         } else if (currentPath.includes('andamyo')){
-          this.isAtNewspaper = false
+          this.isAtNewsletter = false
           this.isAtMagazine = false
           this.isAtAndamyo = true
+          this.isAtTabloid = false
+          this.isAtBroadsheet = false
           this.isAtReleases = false
-        } else {
-          this.isAtNewspaper = false
+        } else if (currentPath.includes('tabloid')){
+          this.isAtNewsletter = false
           this.isAtMagazine = false
           this.isAtAndamyo = false
+          this.isAtTabloid = true
+          this.isAtBroadsheet = false
+          this.isAtReleases = false
+        } else if (currentPath.includes('broadsheet')){
+          this.isAtNewsletter = false
+          this.isAtMagazine = false
+          this.isAtAndamyo = false
+          this.isAtTabloid = false
+          this.isAtBroadsheet = true
+          this.isAtReleases = false
+        } else {
+          this.isAtNewsletter = false
+          this.isAtMagazine = false
+          this.isAtAndamyo = false
+          this.isAtTabloid = false
+          this.isAtBroadsheet = false
           this.isAtReleases = true
         }
       },
