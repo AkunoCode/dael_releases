@@ -16,7 +16,7 @@
       :imgURL = "flipbook['img']"
       :name = "flipbook['name']"
       :dateReleased = "flipbook['date_released']"
-      @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      @click="() => {chooseIndex(index, 'newsletter'); if (!isShowFlipbook) toggleShowFlipbook()}"
       />
     </PreviewContainer>
   </div>
@@ -30,7 +30,7 @@
       :imgURL = "flipbook['img']"
       :name = "flipbook['name']"
       :dateReleased = "flipbook['date_released']"
-      @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      @click="() => {chooseIndex(index, 'tabloid'); if (!isShowFlipbook) toggleShowFlipbook()}"
       />
     </PreviewContainer>
   </div>
@@ -44,7 +44,7 @@
       :imgURL = "flipbook['img']"
       :name = "flipbook['name']"
       :dateReleased = "flipbook['date_released']"
-      @click="() => {chooseIndex(index, 'newspaper'); if (!isShowFlipbook) toggleShowFlipbook()}"
+      @click="() => {chooseIndex(index, 'broadsheet'); if (!isShowFlipbook) toggleShowFlipbook()}"
       />
     </PreviewContainer>
   </div>
