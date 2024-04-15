@@ -288,10 +288,9 @@ a {
 }
 
 .fliphtml5 {
-  width: 100%; 
-  max-width: 1000px; 
-  max-height: 700px;
-  height: 100%;
+  margin-top: 10vh;
+  height: 80vh;
+  width: 80vw;
 }
 
 .fliphtml5 iframe {
@@ -347,6 +346,7 @@ a {
   }
 
   .fliphtml5 {
+    margin-top: 0vh;
     max-width: 100%;
     max-height: 70%;
   }
