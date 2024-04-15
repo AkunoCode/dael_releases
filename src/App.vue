@@ -288,7 +288,7 @@ a {
 }
 
 .fliphtml5 {
-  margin-top: 10vh;
+  margin-top: 5vh;
   height: 80vh;
   width: 80vw;
 }
