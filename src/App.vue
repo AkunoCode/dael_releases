@@ -84,6 +84,7 @@
 import FlipbookData from '@/FlipbookData.json' // For development
 import ReleasesPreview from '@/components/ReleasesPreview.vue'
 import PreviewContainer from '@/components/PreviewContainer.vue'
+import $ from 'jquery'
 
 export default {
   name: 'App',
@@ -107,7 +108,8 @@ export default {
       isAtNewsletter: false,
       isAtTabloid: false,
       isAtBroadsheet: false,
-      isMobile: false
+      isMobile: false,
+      header: null
     }
   },
   computed:{
@@ -134,6 +136,7 @@ export default {
     this.checkPath()
     this.checkMobile()
     window.addEventListener('popstate', this.onMobileBack)
+    this.header = $('#main-header');
   },
   beforeUnmount(){
     window.removeEventListener('popstate', this.onMobileBack)
@@ -143,8 +146,10 @@ export default {
           this.isShowFlipbook = !this.isShowFlipbook
           if (this.isShowFlipbook) {
             document.body.style.overflow = 'hidden'; // Prevent scrolling
+            this.header.css('display', 'none');
           } else {
             document.body.style.overflow = ''; // Enable scrolling
+            this.header.css('display', 'block');
           }
       },
       incrementBookIndex(){
@@ -245,8 +250,10 @@ export default {
       onMobileBack(){
         if (this.isShowFlipbook){
           this.toggleShowFlipbook()
+          this.header.css('display', 'none');
         } else {
           window.history.back()
+          this.header.css('display', 'block');
         }
       }
     }
@@ -288,9 +295,10 @@ a {
 }
 
 .fliphtml5 {
-  margin-top: 5vh;
-  height: 80vh;
-  width: 80vw;
+  width: 100%; 
+  max-width: 1000px; 
+  max-height: 700px;
+  height: 100%;
 }
 
 .fliphtml5 iframe {
@@ -346,7 +354,6 @@ a {
   }
 
   .fliphtml5 {
-    margin-top: 0vh;
     max-width: 100%;
     max-height: 70%;
   }
